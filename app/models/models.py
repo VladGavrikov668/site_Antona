@@ -3,7 +3,6 @@ from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, J
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime, timezone
 from fastapi_users.db import SQLAlchemyBaseUserTable
-
 from ..database.database import Base
 
 
@@ -12,7 +11,6 @@ class Category(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     name = Column(String, unique=True, nullable=False)
-
 
     articles = relationship('Article', back_populates='category')
 
@@ -25,7 +23,6 @@ class Article(Base):
     description = Column(String, nullable=False)
     date = Column(DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc))
     category_id = Column(Integer, ForeignKey('categories.id'))
-
 
     category = relationship('Category', back_populates='articles')
 

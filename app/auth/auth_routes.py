@@ -24,12 +24,6 @@ router.include_router(
     tags=["Авторизация"],
 )
 
-# router.include_router(
-#     fastapi_users.get_register_router(UserRead, UserCreate),
-#     prefix="/auth",
-#     tags=["Авторизация"],
-# )
-
 current_user = fastapi_users.current_user()
 
 

@@ -2,8 +2,6 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
 from fastapi_users.jwt import generate_jwt
-import os
-
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users.exceptions import UserNotExists
 from sqlalchemy.ext.asyncio import AsyncSession

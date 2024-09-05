@@ -7,9 +7,7 @@ from ..schemas.schemas import CategoryCreate, CategoryResponse
 from sqlalchemy.orm import selectinload
 
 
-
 async def create_category(db: AsyncSession, category: CategoryCreate):
-
     db_category = Category(**category.dict())
     db.add(db_category)
 
@@ -29,6 +27,7 @@ async def get_by_name(db: AsyncSession, category_name: str):
         return category
     return False
 
+
 async def get_category_all(db: AsyncSession):
     result = await db.execute(
         select(Category)
@@ -37,6 +36,7 @@ async def get_category_all(db: AsyncSession):
     categories = result.scalars().all()
 
     return [CategoryResponse.from_orm(category) for category in categories]
+
 
 async def delete_category(db: AsyncSession, category_name: str):
     category = await get_by_name(db, category_name)
@@ -47,5 +47,3 @@ async def delete_category(db: AsyncSession, category_name: str):
     await db.execute(delete(Category).where(Category.name == category_name))
     await db.commit()
     return category
-
-
