@@ -11,7 +11,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 routers = APIRouter()
 
-
 @routers.get("/articles", response_model=List[ArticleResponse], tags=["Статьи"])
 async def get_all_articles_endpoint(db: AsyncSession = Depends(get_db)):
     try:

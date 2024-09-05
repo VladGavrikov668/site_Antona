@@ -5,8 +5,12 @@ from datetime import datetime
 
 class CategoryCreate(BaseModel):
     name: str
+
+
 class CategoryDelete(BaseModel):
     name: str
+
+
 class CategoryResponse(BaseModel):
     id: int
     name: str
@@ -15,6 +19,7 @@ class CategoryResponse(BaseModel):
     class Config:
         orm_mode = True
         from_attributes = True
+
 
 class ArticleCreate(BaseModel):
     title: str
@@ -38,4 +43,3 @@ class ArticleResponse(BaseModel):
     class Config:
         orm_mode = True
         from_attributes = True
-

@@ -1,6 +1,5 @@
 from fastapi import HTTPException
 from sqlalchemy import delete
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from ..models.models import Article, Category
@@ -8,7 +7,6 @@ from ..schemas.schemas import ArticleCreate, ArticleResponse
 from sqlalchemy.orm import selectinload
 from sqlalchemy.exc import SQLAlchemyError
 import logging
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

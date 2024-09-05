@@ -8,7 +8,6 @@ from ..sessions.sessions_category import create_category, get_by_name, get_categ
 
 router = APIRouter()
 
-
 @router.get("/categories", response_model=List[CategoryResponse], tags=["Категории"])
 async def get_all_categories(db: AsyncSession = Depends(get_db)):
     try:

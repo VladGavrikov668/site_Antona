@@ -21,6 +21,7 @@ class UserRead(schemas.BaseUser[int]):
             orm_mode = True
 
 
+
 class UserCreate(schemas.BaseUserCreate):
     email: EmailStr = Field(..., description="Введите ваш email")
     username: str = Field(..., description="Введите имя пользователя")
@@ -46,7 +47,3 @@ class UserCreate(schemas.BaseUserCreate):
         if not re.search(r"[A-Za-z]", value) or not re.search(r"\d", value):
             raise ValueError("Password must contain both letters and numbers")
         return value
-
-
-
-

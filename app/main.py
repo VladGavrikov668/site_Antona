@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from app.auth import auth_routes
 from .routes import category_routes, article_routes
 
-
 app = FastAPI()
 
 
