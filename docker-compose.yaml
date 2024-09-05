@@ -1,0 +1,82 @@
+services:
+  app:
+    container_name: my_project_app
+    build: ./
+    depends_on:
+      - db
+      - redis
+    command: >
+      bash -c "
+      while !</dev/tcp/db/5432; do
+        echo 'Waiting for database...';
+        sleep 1;
+      done;
+      poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./:/site_Antona
+    ports:
+      - "8000:8000"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}
+
+  db:
+    container_name: my_project_postgres
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5430:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    container_name: my_project_redis
+    image: redis:alpine
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  celery:
+    container_name: my_project_celery
+    build: .
+    command: poetry run celery -A app.auth.tasks:celery_app worker --loglevel=info
+    depends_on:
+      - redis
+      - db
+    volumes:
+      - .:/site_Antona
+    env_file:
+      - .env
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}
+
+  alembic:
+    build: .
+    container_name: alembic
+    command: >
+      bash -c "while !</dev/tcp/db/5432; do
+        echo 'Waiting for database...';
+        sleep 1;
+      done;
+      poetry run alembic upgrade head"
+    depends_on:
+      - db
+    volumes:
+      - .:/site_Antona
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}?async_fallback=True
+
+volumes:
+  postgres_data:
+  redis_data:
